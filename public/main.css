@@ -1,0 +1,366 @@
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--bs-dark) gray;
+}
+html,body {
+    margin: 0;
+    height: 100vh;
+}
+body {
+    display: grid;
+    grid-template-areas: 'side main';
+    grid-template-columns: 100px 1fr;
+}
+/* START ___ Sidenav */
+aside.nav-bar {
+    grid-area: side;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    align-content: center;
+    height: 100vh;
+    background: var(--bs-dark);
+}
+route-link {
+    all: initial;
+    contain: content;
+    display: flex;
+    height: 100%;
+    width: 100%;
+    color: white;
+    user-select: none;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+}
+route-link:hover {
+    background: rgba(128, 128, 128, 0.5);
+}
+/* END ___ Sidenav */
+
+/* START -----  Main */
+route-handler > div {
+    flex-direction: column;
+}
+
+toast-container {
+    position: absolute;
+    right: 30px;
+    bottom: 30px;
+    display: block;
+    z-index: 9999;
+}
+.small-img {
+    height: 20px;
+    width: 20px;
+}
+
+.panel {
+    grid-area: main;
+    height: 100vh;
+}
+
+.home {
+    background: url("/aDjRH6.jpg") no-repeat;
+    background-size: cover;
+    height: 100vh;
+    color: white;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    display: flex;
+}
+.home > .wrapper {
+    background: rgba(128, 128, 128, 0.5);
+    padding: 10px 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+}
+
+
+/* START PAGE - Server Properties */
+.properties {
+    height: 100%;
+    grid-template-areas: 'head'
+                         'main'
+                         'footer';
+    grid-template-columns: 100%;
+    grid-template-rows: 5% 95%;
+}
+.properties > header {
+    align-items: flex-start;
+    grid-area: head;
+    margin-left: 10px;
+}
+.properties > div#server-props {
+    margin: auto;
+    height: 95%;
+    width: 100%;
+    overflow-y: scroll;
+    grid-area: main;
+}
+.properties-info {
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+/* END PAGE - Server Properties */
+
+
+
+/* START PAGE - Whitelist and permissions */
+
+.whitelist-and-permissions {
+    height: 100%;
+    overflow-y: scroll;
+    padding-top: 20px;
+}
+.whitelist-and-permissions > h3 {
+    margin-left: 35px;
+    margin-bottom: 35px;
+}
+.close-button {
+    user-select: none;
+    cursor: pointer;
+}
+.close-button > span.material-icons {
+    user-select: none;
+    cursor: pointer;
+}
+.close-button:hover {
+    background-color: #d8616d
+}
+.close-button:active {
+    transform: translate(1px,1px);
+}
+
+#whitelist-list {
+    overflow-y: scroll;
+    margin-bottom: 40px;
+    max-height: 400px;
+}
+.whitelist-add-text-inputs {
+    display: flex;
+    flex-direction: row;
+}
+.whitelist-info {
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+
+.whitelist-info > p > code {
+    background: #eee;
+    padding: 2px;
+}
+.whitelist-info > table {
+    border-spacing: 0;
+    border-collapse: collapse;
+}
+.whitelist-info > table th,
+table td {
+    border: 1px solid #000;
+    padding: 5px;
+}
+
+.permissions-info {
+    margin-left: 10px;
+    margin-bottom: 10px;
+}
+.permissions-info > p > code {
+    background: #eee;
+    padding: 2px;
+}
+
+.permissions-list {
+    overflow-y: scroll;
+    margin-bottom: 40px;
+    max-height: 400px;
+}
+#permissions{
+    margin-bottom: 40px;
+}
+.permissions-inputs {
+    display: flex;
+    flex-direction: row;
+}
+
+
+/* START PAGE - control */
+#server-control {
+    color: white;
+    background: url("/aDjRH6.jpg") no-repeat;
+    background-size: cover;
+    height: 100%;
+    grid-template-areas: 'head' 'body';
+    grid-template-rows: 100px auto
+}
+#server-control > header {
+    display: flex;
+    width: 100%;
+    padding-top: 20px;
+    padding-left: 20px;
+    grid-area: head;
+}
+#server-control > main {
+    grid-area: body;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+}
+
+#server-control > main > section.server-stats {
+    display: flex;
+}
+#server-control > main > section.server-stats > div { 
+    height: 100px;
+    width: 300px;
+    margin: 10px;
+    border: solid 1px var(--bs-dark);
+}
+
+.server-active-status {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    align-content: center;
+    height: 100px;
+    width: 300px;
+    margin: 10px;
+    border: solid 1px var(--bs-dark);
+}
+.server-active-status > div.icon > span.material-icons {
+    transform: scale(4);
+    /*--bs-green*/
+}
+.server-active-status > div.icon > span.material-icons[data-color=green] {
+    color: var(--bs-success);
+}
+.server-active-status > div.icon > span.material-icons[data-color=red] {
+    color: var(--bs-danger);
+}
+.server-active-players {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+
+}
+
+/* END PAGE --- SERVER CONTORL*/
+/* START PAGE --- SERVER CONSOLE*/
+
+#server-console {
+    height: 100vh;
+    background: #000;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+#server-console > #console {
+    height: 96vh;
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+}
+#server-console > #console-input {
+    justify-self: flex-end;
+}
+.console-message {
+    color: white;
+    margin: 0 10px 10px 10px
+}
+#server-console > #console-input > .form-control {
+    background: rgb(20, 20, 20);
+    border-color: rgb(20, 20, 20);
+    color: white;
+}
+
+/* START PAGE ---- LOGS */
+#server-logs {
+    height: 100vh;
+}
+#server-logs > header {
+    margin-top: 20px;
+    margin-left: 20px;
+}
+#server-logs > main {
+    height: 100%;
+    margin-left: 20px;
+}
+
+/* START PAGE ---- WORLD*/
+
+#world-settings {
+    color: white;
+    background: url("/aDjRH6.jpg") no-repeat;
+    background-size: cover;
+    height: 100vh;
+    grid-template-areas: 'head head' 'aside body';
+    grid-template-columns: 400px auto;
+    grid-template-rows: 200px auto;
+    column-gap: 50px;
+}
+
+#world-settings > header {
+    display: flex;
+    padding-top: 20px;
+    padding-left: 20px;
+    grid-area: head;
+}
+#world-settings > aside#world-control {
+    height: 100%;
+    grid-area: aside;
+    padding-left: 20px;
+}
+#world-settings > main {
+    height: 100%;
+    grid-area: body;
+    overflow-y: scroll;
+}
+#world-settings > main > details {
+    background-color: var(--bs-dark);
+}
+
+
+.file-uploader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+}
+
+
+/* END -----  Main */
+
+.world-level {
+    border: var(--bs-dark) solid 2px;
+}
+
+#app-settings{
+    color: white;
+    background: url("/aDjRH6.jpg") no-repeat;
+    background-size: cover;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+}
+#app-settings > header {
+    padding: 10px 15px;
+    background: rgba(59, 59, 59, 0.712);
+    margin-bottom: 30px;
+}
+#app-settings > main {
+    background: rgba(59, 59, 59, 0.712);
+    padding: 0 20px;
+    padding-bottom: 20px;
+}

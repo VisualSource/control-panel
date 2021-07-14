@@ -1,0 +1,25 @@
+{
+  "name": "bedrock-control-panel",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "engines": {
+    "node": "14.17.2"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "express-http-to-https": "^1.1.4",
+    "express-ws": "^5.0.2",
+    "fs-extra": "^10.0.0",
+    "mcpe-ping": "^0.0.4",
+    "nanoid": "^3.1.23",
+    "nodemon": "^2.0.12"
+  }
+}
