@@ -17,6 +17,7 @@ if ! screen -list | grep -q "\.GUI"; then
   exit 1
 fi
 
+screen -Rd GUI -X stuff "^C"
 
 # Wait up to 20 seconds for server to close
 StopChecks=0

@@ -2,6 +2,14 @@ const {spawn} = require("child_process");
 const mcpeping = require('mcpe-ping');
 const {join} = require("path")
 
+/**
+ *  Pings the current server and return the port, current and max players
+ *  if the server is offline the ping will fail 
+ * 
+ * 
+ * @param {{host: string}} config 
+ * @returns {Promise<{rinfo:{port: number }, currentPlayers: number, maxPlayers: number}>}
+ */
 async function ping({host}){
     return new Promise((ok,err)=>{
         mcpeping(host,19132,(error,res)=>{
@@ -15,6 +23,12 @@ async function ping({host}){
 }
 
 
+/**
+ * check if the minecraft server screen is active
+ * 
+ * @param {string} lab the screen name of the minecraft server
+ * @returns {Promise<boolean>}
+ */
 async function check_alive(lab){
     const screen = spawn("screen",["-list"]);
     const grep = spawn("grep",["-e",`\.${lab}`]);
@@ -38,7 +52,12 @@ async function check_alive(lab){
     });
 }
 
-
+/**
+ *  send a command or content to the minecraft server's screen
+ * 
+ * @param {{screen: string}} config 
+ * @param {string} content the content to send to the screen
+ */
 async function send_command({screen},content){
 
     const alive = await check_alive(screen);
@@ -52,6 +71,12 @@ async function send_command({screen},content){
     }
 }
 
+/**
+ * Copys the content of the of the minecraft server screen
+ * 
+ * @param {{screen: string, server_dir: string}} config 
+ * @returns {Promise<string>}
+ */
 async function copy_screen({screen,server_dir}){
 
     const alive = await check_alive(screen);

@@ -2,6 +2,12 @@ const fs = require("fs");
 const {join} = require("path");
 const { readJSON, readdir } = require("fs-extra");
 
+/**
+ * Checks if the file or dir exists
+ *  
+ * @param {string} path 
+ * @returns boolean
+ */
 function exists(path){
     try {
         fs.statSync(path);
@@ -11,6 +17,13 @@ function exists(path){
     }
 }
 
+/**
+ * reads and parses the behavior and resource packs manifest's and creates a list of the an world's 
+ * installed and enabled packs
+ * 
+ * @param {any} config 
+ * @returns {Promise<{pack_routes: Map<string,string>, data: {worlds_names: string[],worlds: {}}}>}
+ */
 async function readWorlds(config){
     const root = `${config.server_dir}/worlds`;
     const worlds = await readdir(root);

@@ -11,6 +11,8 @@ else
     echo "Unable to set path variable.  You likely need to download an updated version of SetupMinecraft.sh from GitHub!"
 fi
 
+echo "Starting GUI"
+
 # Check if server is already started
 if screen -list | grep -q "\.GUI"; then
     echo "Server is already started!  Press screen -r GUI to open it"

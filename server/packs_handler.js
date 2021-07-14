@@ -1,10 +1,17 @@
-const {spawn} = require("child_process");
+const { spawn } = require("child_process");
 const fs = require("fs/promises");
 const { nanoid } = require("nanoid");
-const {join} = require("path");
-const {remove, readJSON, writeJSON } = require("fs-extra");
+const { join } = require("path");
+const { remove, readJSON, writeJSON } = require("fs-extra");
 
 
+/**
+ * unzips a file with a give name to a directory
+ * 
+ * @param {string} fileid 
+ * @param {string} route 
+ * @returns {Promise<number>}
+ */
 async function unzip(fileid,route){
     return new Promise((ok,error)=>{
         const unzip = spawn(`unzip ${fileid}.zip -d ${fileid}`,{ shell: "/bin/bash", cwd: route });
@@ -24,6 +31,16 @@ async function unzip(fileid,route){
     });
 }
 
+/**
+ * Install ethear a resource or behavior pack in a world
+ * 
+ * 
+ * @param {{type: string, level: string}} params 
+ * @param {ArrayBuffer} zip 
+ * @param {Map<string,string>} routes 
+ * @param {{server_dir: string}} config 
+ * @returns 
+ */
 async function InstallPack({type,level},zip,routes,{server_dir}){
     const level_name = Buffer.from(level,"base64").toString("utf-8");
     const route = join(server_dir,"worlds",level_name, type === "BP" ? "behavior_packs" : "resource_packs");
@@ -49,7 +66,16 @@ async function InstallPack({type,level},zip,routes,{server_dir}){
     }
 }
 
-
+/**
+ *  Enable a resource or behavior pack in a world
+ * 
+ * 
+ * @param {{level: string, type: string}} params 
+ * @param {string} path 
+ * @param {{server_dir: string}} config 
+ * @param {string} uuid 
+ * @returns 
+ */
 async function EnablePack({level,type},path,{server_dir},uuid){
     try {
         const level_name = Buffer.from(level,"base64").toString("utf-8");
@@ -78,11 +104,25 @@ async function EnablePack({level,type},path,{server_dir},uuid){
     }
 }
 
+/**
+ * Uninstalls and disables a resource or behavior pack.
+ * 
+ * @param {any} parms 
+ * @param {string} path 
+ * @param {string} dir 
+ * @param {string} uuid 
+ */
 async function UninstallPack(parms,path,dir,uuid){
     await remove(path);
     await DisablePack(parms,dir,uuid);
 }
 
+/**
+ * 
+ * @param {{level: string, type: string}} params 
+ * @param {{server_dir: string}} config 
+ * @param {string} uuid 
+ */
 async function DisablePack({level,type},{server_dir},uuid){
     try {
         const level_name = Buffer.from(level,"base64").toString("utf-8");
@@ -96,7 +136,5 @@ async function DisablePack({level,type},{server_dir},uuid){
         throw error;
     }
 }
-
-
 
 module.exports = { InstallPack, EnablePack, DisablePack, UninstallPack };

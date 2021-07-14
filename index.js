@@ -1,32 +1,51 @@
-const express = require("express");
-const {spawn} = require("child_process");
-const fs = require("fs");
-const {writeJSON} = require("fs-extra");
 const path = require("path");
 const https = require("https");
+const fs = require("fs");
+const { spawn } = require("child_process");
+const express = require("express");
+const { writeJSON } = require("fs-extra");
+
 const worlds = require("./server/load_worlds");
-const {copy_screen, ping, send_command} = require("./server/commands");
+const { copy_screen, ping, send_command } = require("./server/commands");
+const { InstallPack, EnablePack, DisablePack, UninstallPack } = require("./server/packs_handler");
 
-const {InstallPack, EnablePack, DisablePack, UninstallPack } = require("./server/packs_handler");
-
+// HTTPS TTL KEYS
 const privateKey = fs.readFileSync(path.join(__dirname,"configs/device1.key"),"utf-8");
 const certificate = fs.readFileSync(path.join(__dirname,"configs/device.crt"),"utf-8");
+// SERVER CONFIG
 const config = JSON.parse(fs.readFileSync(path.join(__dirname,"configs/config.json"),"utf-8"));
+/**
+ * UUID of resouce and behavior packs.
+ * Stop duplicate UUID
+ * @type {Map<string,string>}
+ */
 let pack_routes = new Map();
+
+// Setup express server and attach to the node https server,
+// also and the websocket to express and https server
 const app = express();
 const sec = https.createServer({key: privateKey, cert: certificate},app);
 const ws = require("express-ws")(app,sec);
 
 
+/**
+ *  Handles the setting of headers appon file requests
+ * @param {*} res 
+ * @param {*} path 
+ * @param {*} stat 
+ */
 function setHeader(res, path, stat) {
     res.set("Service-Worker-Allowed","/");
     res.set('x-timestamp', Date.now())
-  }
+}
 app.use(express.static("public",{setHeaders: setHeader}));
+// Need to set limit to 50mb else can't upload zip file to server
 app.use(express.json({ limit: "50mb" }));
 app.use(express.raw({ limit: "50mb" }));
 
-
+/**
+ * Handle shuntDown of express, websocket, and https server
+ */
 function shutDown(){
     sec.close(()=>{
         console.log('Closed out remaining connections');
@@ -39,6 +58,21 @@ function shutDown(){
     }, 10000);
 }
 
+process.on( 'SIGINT', function() {
+    console.log( "\nGracefully shutting down from SIGINT (Ctrl-C)" );
+    shutDown();
+});
+
+/**
+ * Websocket handler
+ * 
+ * handles the pinging and console actions 
+ * 
+ * how often cnosole and server ping rates 
+ * can be configured in app or in `configs/config.json` 
+ * 
+ * @url /server
+ */
 app.ws("/server",(ws,req)=>{
     ws.send(JSON.stringify({ type: "CONSOLE_MSG", data: "" }));
     ws.on("message",(msg)=>{
@@ -66,6 +100,9 @@ app.ws("/server",(ws,req)=>{
     }, config.server_status_refresh_rate);
 });
 
+/**
+ * Handles request for the server minecraft world's and resouce/behavior packs
+ */
 app.get("/worlds",async (req,res)=>{
     try {
         const data = await worlds(config);
@@ -116,7 +153,6 @@ app.get("/restart",(req,res)=>{
 });
 
 app.post("/save-app-settings",async (req,res)=>{
-
     try {
         await writeJSON(path.join(__dirname,"configs/config.json"),req.body);
         res.send({
@@ -127,8 +163,6 @@ app.post("/save-app-settings",async (req,res)=>{
         res.status(500).send({ error, code: 500});
     }
 });
-
-/* TO FINISH */
 
 app.post("/install/:type/:level", async (req,res)=>{
     try {
@@ -175,23 +209,14 @@ app.post("/enable/:type/:level", async(req,res)=>{
     }
 });
 
-app.post("/updatefile/:file",(req,res)=>{
-
-   
-    fs.writeFile(path.join(config.server_dir,req.params.file),JSON.stringify(req.body),(err)=>{
-        if(err){
-             res.status(501).send({ code:501, error: err});
-            return;
-        }
-    });
-    
-    const child = spawn(`screen -Rd ${config.screen} -X stuff "${req.params.file === "whitelist.json" ? "whitelist" : "permission"} reload $(printf '\r')`);
-    child.on("error",(error)=>{
-         res.status(500).send({ code:500, error: error.toString("utf8")});
-    });
-    child.on("exit",()=>{
-        res.send({ok:200});
-    });
+app.post("/updatefile/:file", async (req,res)=>{
+    try {
+        await writeJSON(path.join(config.server_dir,req.params.file),req.body,{encoding:"utf8"});
+        await send_command(config,`${req.params.file === "whitelist.json" ? "whitelist" : "permission"} reload`);
+        res.send({ok: 200});
+    } catch (error) {
+        res.status(501).send({ code:501, error });
+    }
 });
 app.post("/save-server-properties",async (req,res)=>{
 
