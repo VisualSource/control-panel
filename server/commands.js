@@ -1,7 +1,8 @@
 const {spawn} = require("child_process");
 const mcpeping = require('mcpe-ping');
 const {join} = require("path")
-
+const { readdir } = require("fs-extra");
+const {readFile} = require("fs/promises");
 /**
  *  Pings the current server and return the port, current and max players
  *  if the server is offline the ping will fail 
@@ -104,4 +105,32 @@ async function copy_screen({screen,server_dir}){
 }
 
 
-module.exports = {copy_screen, ping, send_command};
+async function logs({server_dir}){
+    const path = join(server_dir,"/logs");
+    const logs = await readdir(path);
+
+    let review = [];
+    for (const log of logs) {
+        let content = await readFile(join(path,log),{encoding: "utf-8"});
+
+        const data = log.split(".");
+        
+        for(let i = 0; i < content.search("\n"); i++){
+            content = content.replace("\n","<br/>");
+        }
+
+
+        let item = {
+            content,
+            date: `[${data[2]}/${data[3]}/${data[1]}]`,
+            name: `  Server: ${data[0]} | Time: ${data[4]}:${data[5]}:${data[6]}`
+        }
+        review.push(item);
+    }
+
+
+    return review;
+}
+
+
+module.exports = {copy_screen, ping, send_command, logs};

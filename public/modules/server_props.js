@@ -5,21 +5,18 @@ export class ServerProps extends HTMLDivElement {
         super();
         this.loader = `<div class="spinner-grow" role="status"><span class="visually-hidden">Loading...</span></div>`;
     }
-    disconnectedCallback() {
-        console.log("Dis")
-    }
     connectedCallback(){
         this.handle();
-    }
-    adoptedCallback() {
-        console.log("adopt")
     }
     async handle(){
         const data = await this.loadContent();
         const el = this.getElementsByClassName("server-props").item(0);
      
         el.innerHTML = `
-            <form>
+            <form id="server-props-form">
+            <header>
+                <button type="submit" class="btn btn-success">Save Changes</button>
+            </header>
             <div class="input-group mb-4">
                 <span class="input-group-text" id="basic-addon1">Server Name</span>
                 <input name="server-name" type="text" class="form-control" placeholder="" value="${data["server-name"]}" aria-label="Server Name" aria-describedby="basic-addon1">
@@ -303,5 +300,4 @@ export class ServerProps extends HTMLDivElement {
             document.dispatchEvent(new CustomEvent(`new-toat`,{detail: {type: "Error", message: "Faild to fetch server properties."}})); 
         }
     }
-    attributeChangedCallback(name, oldValue, newValue){}
 }

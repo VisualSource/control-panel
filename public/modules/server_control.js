@@ -32,7 +32,8 @@ export class ActiveServerStatus extends HTMLElement {
 
 
         document.addEventListener("STATUS_CHANGE",(event)=>{
-            h4.textContent = event.detail.status;
+            const status = event.detail.status;
+            h4.textContent = status.charAt(0).toUpperCase() + status.slice(1);
             port.textContent = event.detail.port;
 
             mat.textContent = event.detail.status === "online" ? "check_circle" : "remove_circle_outline";

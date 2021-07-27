@@ -104,6 +104,10 @@ toast-container {
     overflow-y: scroll;
     grid-area: main;
 }
+.properties > div#server-props > form > header {
+    margin-bottom: 10px;
+    margin-left: 10px;
+}
 .properties-info {
     margin-left: 10px;
     margin-bottom: 10px;
@@ -215,6 +219,10 @@ table td {
     align-items: center;
 }
 
+player-count > code {
+    font-size: large;
+}
+
 #server-control > main > section.server-stats {
     display: flex;
 }
@@ -222,7 +230,7 @@ table td {
     height: 100px;
     width: 300px;
     margin: 10px;
-    border: solid 1px var(--bs-dark);
+    background-color: var(--bs-dark);
 }
 
 .server-active-status {
@@ -233,7 +241,7 @@ table td {
     height: 100px;
     width: 300px;
     margin: 10px;
-    border: solid 1px var(--bs-dark);
+    background-color: var(--bs-dark);
 }
 .server-active-status > div.icon > span.material-icons {
     transform: scale(4);
@@ -363,4 +371,39 @@ table td {
     background: rgba(59, 59, 59, 0.712);
     padding: 0 20px;
     padding-bottom: 20px;
+}
+
+
+#server-logs > header {
+    display: flex;
+    padding-top: 20px;
+    padding-left: 20px;
+    grid-area: head;
+}
+#server-logs > main {
+    width: 100%;
+    overflow-y: scroll;
+    height: calc(100% - 80px);
+}
+
+#server-logs > main > details > summary {
+    background-color: var(--bs-dark);
+    padding-left: 10px;
+}
+#server-logs > main > details > p {
+    background-color: var(--bs-dark);
+    padding-left: 10px;
+    padding-bottom: 10px;
+}
+
+#server-logs {
+    color: white;
+    background: url("/aDjRH6.jpg") no-repeat;
+    background-size: cover;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
 }

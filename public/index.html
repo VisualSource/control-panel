@@ -21,6 +21,7 @@
         <route-link data-path="/console" data-icon="article"></route-link>
         <route-link data-path="/whitelist-permissions" data-icon="admin_panel_settings"></route-link>
         <route-link data-path="/world" data-icon="public"></route-link>
+        <route-link data-path="/logs" data-icon="list_alt"></route-link>
         <route-link data-path="/app-settings" data-icon="tap_and_play"></route-link>
     </aside>
     <route-handler>
@@ -235,16 +236,16 @@
                         </div>
                     </div>
                     <div>
-                        <label for="console_refresh_rate" class="form-label">Console refresh rate</label>
+                        <label for="console_refresh_rate" class="form-label">Console refresh rate (in ms)</label>
                         <div class="input-group mb-3">
-                            <input id="console_refresh_rate" title="How often the console is updated" required name="console_refresh_rate" min="5000" type="number" class="form-control" value="7000">
+                            <input id="console_refresh_rate" title="How often the console is updated" required name="console_refresh_rate" min="0" type="number" class="form-control" value="7000">
                             <button class="btn btn-success" type="submit">Save</button>
                         </div>
                     </div>
                     <div>
-                        <label for="server_status_refresh_rate" class="form-label">Server status refresh rate</label>
+                        <label for="server_status_refresh_rate" class="form-label">Server status refresh rate (in ms)</label>
                         <div class="input-group mb-3">
-                            <input id="server_status_refresh_rate" title="The rate at which the status is queryed" required name="server_status_refresh_rate" min="2000" type="number" class="form-control" value="5000">
+                            <input id="server_status_refresh_rate" title="The rate at which the status is queryed" required name="server_status_refresh_rate" min="0" type="number" class="form-control" value="5000">
                             <button class="btn btn-success" type="submit">Save</button>
                         </div>
                     </div>
@@ -254,6 +255,13 @@
                 </form>
             </main>
             </header>
+        </div>
+        <div data-path="/logs" data-display="flex" id="server-logs" is="logger-list">
+            <header>
+                <h1 class="fw-bold">Logs</h1>
+            </header>
+            <main>
+            </main>
         </div>
     </route-handler>
     <script type="module" src="main.js" defer></script>

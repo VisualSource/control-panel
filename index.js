@@ -6,7 +6,7 @@ const express = require("express");
 const { writeJSON } = require("fs-extra");
 
 const worlds = require("./server/load_worlds");
-const { copy_screen, ping, send_command } = require("./server/commands");
+const { copy_screen, ping, send_command, logs } = require("./server/commands");
 const { InstallPack, EnablePack, DisablePack, UninstallPack } = require("./server/packs_handler");
 
 // HTTPS TTL KEYS
@@ -98,6 +98,17 @@ app.ws("/server",(ws,req)=>{
                 ws.send(JSON.stringify({ type:"PLAYER_COUNT_CHANGE", data: { min: 0, max: 0 }}));
             }
     }, config.server_status_refresh_rate);
+});
+
+
+app.get("/logs",async(req,res)=>{
+    try {
+        const data = await logs(config);
+        res.send(data);
+    } catch (error) {
+        console.error(error);
+        res.sendStatus(500).send({error,code: 500});
+    }
 });
 
 /**
