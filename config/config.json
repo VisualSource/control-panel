@@ -1,0 +1,7 @@
+{
+    "server_dir":"/home/main/minecraftbe/test",
+    "host":"192.168.1.14",
+    "screen":"test",
+    "console_refresh_rate":"7000",
+    "server_status_refresh_rate":"5000"
+}

@@ -24,4 +24,4 @@ cd /home/main/control-panel
 Permissions=$(chown -R main /home/main/control-panel >/dev/null)
 Permissions=$(chmod -R 755 /home/main/control-panel/*.sh >/dev/null)
 
-screen -dmS GUI /bin/bash -c "node index.js"
+screen -dmS GUI /bin/bash -c "node ./bin/www"
